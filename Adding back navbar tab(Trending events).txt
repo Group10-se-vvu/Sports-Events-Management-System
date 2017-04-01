@@ -1,0 +1,100 @@
+<!-- Adding a back navbar tap to the trending events page-->
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Trendingevents.aspx.cs" Inherits="Trendingevents" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta  charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Trending Events</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        body{
+            padding-top:50px;
+        }
+        .center{
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+                    <div>
+        <!-- navbar-->
+     <div class="navbar-default navbar-fixed-top" role="navigation">
+        <div class ="container"><!--contains the elements in the navigation bar-->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    </button>
+                 <a class="navbar-brand"> SPORTS EVENTS MANAGEMENT SYSTEM</a><!-- branding the website-->
+                <p class="navbar-text">Powered By Sports</p> 
+                           </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href ="login.aspx">Back</a></li><!--Added back navbar tab-->
+                                   </ul>
+                                                         </div>
+             </div>
+
+        </div>
+        <!-- navnbar end-->
+        <div>
+              <h2 align="center">
+                 <span class="label label-danger"><span class=" glyphicon glyphicon-bell "></span> Trending Events<span class="glyphicon glyphicon-bell"></span></span>
+                  <p align="center">
+                      &nbsp;</p>
+                  <p><asp:Label ID="IbIMsg" runat="server"></asp:Label></p><span class=" glyphicon glyphicon-user" style="left: 196px; top: -45px"></span>
+              </h2>
+                <!-- round image-->
+        <div class="container center">
+        <div class="row">
+            <asp:Repeater ID="Repeater1" runat="server" DataSourceID="SqlDataSource1" OnItemDataBound="LoadImg">
+          <ItemTemplate>
+           <div class=" col-xs-12 col-sm-6 col=md-8">
+           <asp:Label ID="lblid" Visible="false" runat="server" Text='<%#Eval("EventID") %>' />
+            
+	       <asp:Image ImageUrl="~/images/unnamed.png"  Cssclass="img-circle" Width="140" Height="140" ID="img" runat="server"/>
+             <h2> 
+                 <asp:Label ID="lbleventgames" runat="server" Text='<%#Eval("EventName") %>' />
+             </h2>
+            <p><asp:Label ID="Label1" runat="server" Text='<%#Eval("Description") %>' /></p>
+              <p>
+                  <asp:LinkButton ID="btnenroll2" runat="server" class=" btn btn-danger" OnClick="btnenroll2_onclick">Enroll </asp:LinkButton>&nbsp;&nbsp;<asp:LinkButton ID="btnviewresults" runat="server" OnClick="btnviewresults_Click" CssClass="btn btn-info">View Results</asp:LinkButton>
+                </p>
+             </div>
+            </ItemTemplate>
+            </asp:Repeater>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SMESConnectionString1 %>" SelectCommand="SELECT [Eventname], [EventID], [Description] FROM [Events]"></asp:SqlDataSource>
+            </div>
+            </div>
+        <!-- footer begins-->
+   <footer>
+      <footer>
+                <p>&copy; <%: DateTime.Now.Year %>- POWERED BY SPORTS</p>
+            </footer>
+                 </footer>
+        <!-- footer ends-->
+    </form>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
