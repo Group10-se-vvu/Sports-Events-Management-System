@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+public partial class Editresults : System.Web.UI.Page
+{
+    DataTable dt = new DataTable();
+    SqlDataAdapter da = new SqlDataAdapter();// hold the select command
+    DataSet ds = new DataSet();// to fetch from the database/ holds data
+    string connstr = "Data Source = (localdb)\\v11.0;Initial Catalog=SMES;Integrated Security=True";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnsearch_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnsearch_onclick(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(connstr);
+        da.SelectCommand = new SqlCommand("SELECT Event, TeamA, TeamB, ScoreA, ScoreB, Eventname, RecordsID FROM  dbo.Records where Eventname='" + ddleventname.SelectedValue + "'", con);
+        ds.Clear();
+        da.Fill(ds);
+
+        GridView1.DataSource = ds;//.Tables[0];
+        GridView1.DataBind();
+    }
+
+    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        GridViewRow row = (GridViewRow)GridView1.Rows[e.RowIndex];
+        Label lblRecordsID = (Label)row.FindControl("lblRecordsID");
+        Label lbleventname = (Label)row.FindControl("lbleventname");
+        TextBox lblscorea = (TextBox)row.FindControl("lblscorea");
+        TextBox lblscoreb = (TextBox)row.FindControl("lblscoreb");
+
+        hdfScoreA.Value = lblscorea.Text.ToString();
+        hdfScoreB.Value = lblscoreb.Text.ToString();
+        hdfRecordsID.Value = lblRecordsID.Text.ToString();
+        hdfeventname.Value = lbleventname.Text.ToString();
+        SqlConnection con = new SqlConnection(connstr);
+        da.UpdateCommand = new SqlCommand("UPDATE [SMES].[dbo].[Records] SET ScoreA = '" + hdfScoreA.Value + "', ScoreB = '" + hdfScoreB.Value + "' WHERE Eventname='" + hdfeventname.Value + "' AND RecordsID='" + hdfRecordsID.Value+"'", con);
+        con.Open();
+        da.UpdateCommand.ExecuteNonQuery();
+
+        con.Close();
+    }
+}
