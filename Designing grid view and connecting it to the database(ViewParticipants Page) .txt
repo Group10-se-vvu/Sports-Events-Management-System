@@ -1,0 +1,150 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Viewpar.aspx.cs" Inherits="Viewpar" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta  charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>View Participants</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+ .center-page{
+width:300px;
+height:300px;
+position:center;
+ top:-80px;
+ bottom:0;
+ left:0;
+ right:0;
+  margin:auto;
+     }
+        .auto-style1 {
+            width: 300px;
+            height: 184px;
+            position: center;
+            top: -80px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        .auto-style2 {
+            width: 300px;
+            height: 147px;
+            position: center;
+            top: -80px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+    </head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+     <!-- navbar-->
+     <div class="navbar-default navbar-fixed-top" role="navigation">
+        <div class ="container"><!--contains the elements in the navigation bar-->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="navbar-collapse" id="btnlogin">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    </button>
+                 <a class="navbar-brand"> SPORTS EVENTS MANAGEMENT SYSTEM</a><!-- branding the website-->
+                <p class="navbar-text">Powered By Sports</p> 
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href ="login.aspx">Logout</a></>
+                   <li> <a href="Adminpage.aspx"> BACK</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        <!-- navnbar end-->
+
+        <p><h3 align="center">View Participants</h3></p>
+        <hr runat="server" id="hr" style="border-color:blue; height:10px;" />
+        <!--adding the search textbox for filtering-->
+       <div class="auto-style2" >
+                    <asp:TextBox ID="txtsearch" runat="server" CssClass="col-md-1 form-control" placeholder="Enter the EventName" ></asp:TextBox>
+           <asp:RadioButton ID="rbtmale" runat="server" GroupName="gender" Text="Males" CssClass="col-xs-6"/>
+            <asp:RadioButton ID="rbtfemale" runat="server" GroupName="gender" Text="Females" CssClass="col-xs-6"/>
+               <asp:LinkButton ID="btnsearch" runat="server" OnClick="btnsearch_onclick" CssClass="btn btn-default btn-search col-md-1" style="left: 290px; top: -61px; width: 40px"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></asp:LinkButton>
+                  </div>
+
+        <div class="container">
+                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"  CellPadding="4" CssClass="auto-style1" ForeColor="#333333" GridLines="None" Width="904px">
+                    <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                    <EditRowStyle BackColor="#999999" />
+                    <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                    <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                    <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                    <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                    <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                    <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                    <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                    <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                    <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+                    <Columns>
+                        <asp:TemplateField  HeaderText="Event type">
+                            <ItemTemplate>
+                            <asp:Label Text='<%#(Eval("EventType")) %>' runat="server" ID="lbleventtype" />
+                            </ItemTemplate>
+
+                        </asp:TemplateField>
+                        <asp:TemplateField  HeaderText="Event">
+                            <ItemTemplate>
+                            <asp:Label Text='<%#(Eval("Event")) %>' runat="server" ID="lblEvent" />
+                            </ItemTemplate>
+
+                        </asp:TemplateField>
+                          <asp:TemplateField  HeaderText="Name">
+                            <ItemTemplate>
+                            <asp:Label Text='<%#(Eval("Name")) %>' runat="server" ID="lblName" />
+                            </ItemTemplate>
+
+                        </asp:TemplateField>
+                         
+                        <asp:TemplateField  HeaderText="Gender">
+                            <ItemTemplate>
+                            <asp:Label Text='<%#(Eval("Gender")) %>' runat="server" ID="lblGender" />
+                            </ItemTemplate>
+
+                        </asp:TemplateField>
+
+                         <asp:TemplateField  HeaderText="Phone">
+                            <ItemTemplate>
+                            <asp:Label Text='<%#(Eval("phone")) %>' runat="server" ID="lblphone" />
+                            </ItemTemplate>
+
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SMESConnectionString1 %>" SelectCommand="SELECT [EventType], [Event], [Name], [phone], [Gender], [Eventname] FROM [Participant]">
+                </asp:SqlDataSource>
+            </div>
+        </div>
+       
+    </form>
+</body>
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</html>
