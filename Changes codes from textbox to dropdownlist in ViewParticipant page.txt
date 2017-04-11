@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+public partial class Viewpar : System.Web.UI.Page
+{
+    DataTable dt = new DataTable();
+    SqlDataAdapter da = new SqlDataAdapter();// hold the select command
+    DataSet ds = new DataSet();// to fetch from the database/ holds data
+    string connstr = "Data Source = (localdb)\\v11.0;Initial Catalog=SMES;Integrated Security=True";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void txtsearch_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnsearch_onclick(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(connstr);
+        string gender = "";
+        if (rbtfemale.Checked == true)
+        {
+            gender = "Female";
+
+        }
+        else
+        {
+            gender = "Male";
+        }
+        da.SelectCommand = new SqlCommand("SELECT EventType, Event, Name, phone, Gender, Eventname FROM dbo.Participant where Eventname='" + ddleventname.SelectedValue + "' AND  gender='" + gender+"'", con);// made changes to the this line of codes
+
+         ds.Clear();
+        da.Fill(ds);
+
+        GridView1.DataSource = ds;//.Tables[0];
+        GridView1.DataBind();
+    }
+}
