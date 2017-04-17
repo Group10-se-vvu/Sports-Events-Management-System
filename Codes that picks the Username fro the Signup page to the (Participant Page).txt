@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+public partial class particpantpage : System.Web.UI.Page
+{
+    string connstr ="Data Source=(localdb)\\v11.0;Initial Catalog=SMES;Integrated Security=True";
+    DataSet ds = new DataSet();
+    DataTable dt = new DataTable();
+    SqlDataAdapter da = new SqlDataAdapter();
+   
+    protected void Page_Load(object sender, EventArgs e)// this part of the code picks the Username fron the Signup page unto the Participant page
+    {
+        if (!IsPostBack)
+        {
+            SqlConnection conn = new SqlConnection(connstr);
+            da.SelectCommand = new SqlCommand("Select Name from dbo.Login where Username='" + Session["USERNAME"] + "'", conn);
+            ds.Clear();
+            da.Fill(ds);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach(DataRow dr in ds.Tables[0].Rows)
+                {
+                    hfdusername.Value = dr[0].ToString();
+                     
+                }
+            }
+            
+
+
+            txteventname.Text = (String)Session["cossa"];
+                        txteventname.Enabled = false;
+        }
+        // Code Ends here
+       
+    }
+
+    protected void btnenroll_click(object sender, EventArgs e)
+    {
+        string gender = "";
+        if (Rbtfemale.Checked == true)
+        {
+            gender = "Female";
+
+        }
+        else
+        {
+            gender = "Male";
+        }
+
+        SqlConnection conn = new SqlConnection(connstr);// creating an instance of the sql connection
+        da.InsertCommand = new SqlCommand("Insert into [SMES].[dbo].[Participant] values (@Eventname,@EventType,@Event,@Name,@phone,@Gender)", conn);
+        da.InsertCommand.Parameters.AddWithValue("@Eventname", txteventname.Text);
+        da.InsertCommand.Parameters.AddWithValue("@EventType", ddleventtype.SelectedValue);
+        da.InsertCommand.Parameters.AddWithValue("@Event", ddlevent.SelectedValue);
+        da.InsertCommand.Parameters.AddWithValue("@Name",hfdusername.Value);
+        da.InsertCommand.Parameters.AddWithValue("@phone", txtnumber.Text);
+        da.InsertCommand.Parameters.AddWithValue("@Gender",gender);
+        
+        conn.Open();
+        da.InsertCommand.ExecuteNonQuery();
+        conn.Close();
+    }
+
+    protected void Rbtfemale_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //SqlConnection conn = new SqlConnection(connstr);
+
+    }
+
+    protected void btnback_onclick(object sender, EventArgs e)//back button codes
+    {
+        Response.Redirect("Trendingevents.aspx");
+    }
+}
