@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+using CrystalDecisions.Shared;
+using CrystalDecisions.CrystalReports.Engine;
+public partial class Editresults : System.Web.UI.Page
+{
+    DataTable dt = new DataTable();
+    SqlDataAdapter da = new SqlDataAdapter();// hold the select command
+    DataSet ds = new DataSet();// to fetch from the database/ holds data
+    string connstr = "Data Source = (localdb)\\v11.0;Initial Catalog=SMES;Integrated Security=True";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnsearch_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnsearch_onclick(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(connstr);
+        da.SelectCommand = new SqlCommand("SELECT Event, TeamA, TeamB, ScoreA, ScoreB, Eventname, RecordsID FROM  dbo.Records where Eventname='" + ddleventname.SelectedValue + "'", con);
+        ds.Clear();
+        da.Fill(ds);
+
+        GridView1.DataSource = ds;//.Tables[0];
+        GridView1.DataBind();
+    }
+
+    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+    }
+
+    protected void btnprint_onclick(object sender, EventArgs e)
+    {
+        SqlConnection con = new SqlConnection(connstr);
+        da.SelectCommand = new SqlCommand("SELECT Event, TeamA, TeamB, ScoreA, ScoreB, Eventname, RecordsID FROM  dbo.Records where Eventname='" + ddleventname.SelectedValue + "'", con);
+        
+        string FilePath = Server.MapPath("~/Rescrystal.rpt");//location of report
+        ReportDocument rdoc = new ReportDocument();
+        rdoc.Load(FilePath);
+        DataTable oba = new DataTable();
+        SportscrystalTableAdapters.Records1TableAdapter ob = new SportscrystalTableAdapters.Records1TableAdapter();
+
+        oba = ob.GetData(ddleventname.SelectedValue);
+        rdoc.SetDataSource(oba);
+        Response.Clear();
+        Response.Buffer = true;
+        Response.ContentType = "application/pdf";
+        rdoc.ExportToHttpResponse(ExportFormatType.PortableDocFormat, Response, false, "Results Report");
+        ds.Clear();
+        da.Fill(ds);
+    }
+}
